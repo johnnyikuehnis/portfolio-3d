@@ -2,31 +2,36 @@ export type Project = {
   id: string;
   title: string;
   tagline: string;
-  description: string;
   tech: string[];
+  description: string;
   link?: string;
+  image?: string;
 };
+
 
 export const PROJECTS: Project[] = [
   {
     id: "p1",
-    title: "Project One",
-    tagline: "A sample project",
-    description: "Description for project one.",
-    tech: ["TypeScript", "React", "Three.js"],
+    title: "A.R.M.",
+    tagline: "Appendage Replication Machine",
+    description: "An gesture-controlled robotic arm that moves in accordance with the user's own arm",
+    tech: ["Computer Vision", "Robotics"],
+    image: "/images/placeholder.png"
   },
   {
     id: "p2",
-    title: "Project Two",
-    tagline: "Another sample",
-    description: "Description for project two.",
-    tech: ["Go", "B+ Trees", "Concurrency"],
+    title: "Dangers in Packaging",
+    tagline: "Data Analysis on Chemicals in Food",
+    description: "A data-driven analysis on endocrine-disrupting chemicals in food packaging",
+    tech: ["Data Analysis", "Data Scraping"],
+    image: "/images/placeholder.png"
   },
   {
     id: "p3",
-    title: "Project Three",
-    tagline: "Last placeholder",
-    description: "Description for project three.",
-    tech: ["C++", "OpenGL", "Shaders"],
+    title: "The Lingo Genie",
+    tagline: "The language learning tool for gen z slang!",
+    description: "Are you of an older generation and want to learn slang? Now you can!",
+    tech: ["Frontend", "Backend", "SWE"],
+    image: "/images/placeholder.png"
   },
 ];

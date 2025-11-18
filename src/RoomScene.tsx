@@ -52,19 +52,19 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
       <ProjectPoster
         project={PROJECTS[0]}
         position={[0, 5, -4.95]}
-        onClick={onProjectSelect}
+        onSelect={onProjectSelect}
       />
 
       <ProjectPoster
         project={PROJECTS[1]}
         position={[-3, 5, -4.95]}
-        onClick={onProjectSelect}
+        onSelect={onProjectSelect}
       />
 
       <ProjectPoster
         project={PROJECTS[2]}
         position={[3, 5, -4.95]}
-        onClick={onProjectSelect}
+        onSelect={onProjectSelect}
       />
 
       {/* MODELS */}
@@ -135,6 +135,24 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
         url="/models/bookcaseClosedWide.glb"
         position={[-2.0, -1, -3.8]}
         scale={3.5}
+      />
+
+      <Model
+        url="/models/books.glb"
+        position={[0.0, 0.1, -4.0]}
+        scale={4.3}
+      />
+
+      <Model
+        url="/models/books2.glb"
+        position={[0.0, 0.92, -4.0]}
+        scale={4.3}
+      />
+
+      <Model
+        url="/models/books3.glb"
+        position={[0.0, -0.74, -4.0]}
+        scale={4.3}
       />
     </>
   );
