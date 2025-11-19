@@ -7,6 +7,7 @@ import { RoomScene } from "./RoomScene";
 import { CameraRig } from "./CameraRig";
 import { FixedCamera } from "./FixedCamera";
 import type { Project } from "./projects";
+import { ProjectInfoContainer } from "./ProjectInfoContainer";
 
 /* -------------------------------------------------------------
    ORIGINAL HOME CAMERA (matches your early setup exactly)
@@ -22,20 +23,16 @@ const HOME_LOOK = new Vector3(0, 2.2, -5);
 ------------------------------------------------------------- */
 const CAMERA_PRESETS: Record<string, { target: Vector3; lookAt: Vector3 }> = {
   left: {
-    target: new Vector3(-3, 4, 10),
-    lookAt: new Vector3(-45, 4, -5),
+    target: new Vector3(-3, 4, 7),
+    lookAt: new Vector3(-1, 0, 0), // pure left
   },
   middle: {
-    // Straight up from home position
     target: new Vector3(0, 13, 7),
-    // Look at somewhere around the middle of the posters
-    lookAt: new Vector3(0, 12, -5),
+    lookAt: new Vector3(0, 0, -1), // forward
   },
   right: {
-    // Slightly right of center
-    target: new Vector3(3, 4, 10),
-    // Look at a point right on the back wall, mid-height
-    lookAt: new Vector3(45, 5, 5),
+    target: new Vector3(3, 4, 7),
+    lookAt: new Vector3(1, 0, 0), // pure right
   },
 };
 
@@ -133,6 +130,8 @@ function App() {
 
       {/* 3D Canvas */}
       <Canvas shadows camera={{ position: [0, 4, 7], fov: 50 }}>
+
+
         {/* Optional debug fly controls */}
         <FreeFlyControls movementSpeed={5} lookSpeed={0.002} />
 
@@ -170,7 +169,11 @@ function App() {
         {/* Room */}
         <Suspense fallback={null}>
           <RoomScene onProjectSelect={handleProjectSelect} />
+
+          {/* NEW — Generalized project info panel */}
+          <ProjectInfoContainer project={selectedProject} />
         </Suspense>
+
       </Canvas>
     </div>
   );

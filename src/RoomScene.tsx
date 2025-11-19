@@ -3,6 +3,7 @@ import { ProjectPoster } from "./ProjectPoster";
 import { PROJECTS } from "./projects";
 import type { Project } from "./projects";
 
+
 type RoomSceneProps = {
   onProjectSelect: (project: Project) => void;
 };
@@ -104,25 +105,28 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
           WALLS
       ========================================================= */}
       <mesh position={[0, 1.5, -5]} receiveShadow>
-        <planeGeometry args={[12, 18]} />
+        <planeGeometry args={[12, 40]} />
         <meshStandardMaterial color="#5a515f" roughness={0.9} metalness={0.05} />
+
       </mesh>
+              {/* <meshStandardMaterial color="#f9f9f9ff" roughness={0.9} metalness={0.05} /> */}
+
 
       <mesh
-        position={[-6, 1.5, 0]}
+        position={[-6, 1.5, -2]}
         rotation={[0, Math.PI / 2, 0]}
         receiveShadow
       >
-        <planeGeometry args={[12, 18]} />
+        <planeGeometry args={[30, 40]} />
         <meshStandardMaterial color="#5a515f" roughness={0.9} metalness={0.05} />
       </mesh>
 
       <mesh
-        position={[6, 1.5, 0]}
+        position={[6, 1.5, -2]}
         rotation={[0, -Math.PI / 2, 0]}
         receiveShadow
       >
-        <planeGeometry args={[12, 18]} />
+        <planeGeometry args={[30, 40]} />
         <meshStandardMaterial color="#5a515f" roughness={0.9} metalness={0.05} />
       </mesh>
 
