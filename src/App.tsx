@@ -1,86 +1,117 @@
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Suspense, useState } from "react";
-import { OrbitControls, Environment } from "@react-three/drei";
-import { FreeFlyControls } from "./FreeFlyControls";
-import { PROJECTS } from "./projects";
-import type { Project } from "./projects";
-import { RoomScene } from "./RoomScene";
+import React, { Suspense, useState, useEffect } from "react";
+import { Canvas } from "@react-three/fiber";
 import { Vector3 } from "three";
 
-/* -------------------------------------------------------------
-   OPTIONAL FIXED CAMERA — disabled for now so Orbit is enabled
-------------------------------------------------------------- */
-function FixedCamera() {
-  const { camera } = useThree();
-
-  const camPos = new Vector3(0, 4, 7);
-  const lookTarget = new Vector3(0, 2.2, -5);
-
-  useFrame(() => {
-    camera.position.lerp(camPos, 0.1);
-    camera.lookAt(lookTarget);
-  });
-
-  return null;
-}
+import { FreeFlyControls } from "./FreeFlyControls";
+import { RoomScene } from "./RoomScene";
+import { CameraRig } from "./CameraRig";
+import { FixedCamera } from "./FixedCamera";
+import type { Project } from "./projects";
 
 /* -------------------------------------------------------------
-   MODAL WINDOW
+   ORIGINAL HOME CAMERA (matches your early setup exactly)
 ------------------------------------------------------------- */
-function ProjectModal({
-  project,
-  onClose,
-}: {
-  project: Project;
-  onClose: () => void;
-}) {
-  return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <div>
-            <div className="modal-title">{project.title}</div>
-            <div className="modal-tagline">{project.tagline}</div>
-          </div>
-          <button className="modal-close-btn" onClick={onClose}>
-            Close
-          </button>
-        </div>
-
-        <div className="modal-tech">
-          {project.tech.map((t) => (
-            <span key={t} className="modal-pill">
-              {t}
-            </span>
-          ))}
-        </div>
-
-        <div className="modal-body">{project.description}</div>
-
-        {project.link && (
-          <div className="modal-link">
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: "#9fd5ff" }}
-            >
-              View code / demo ↗
-            </a>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+const HOME_POS = new Vector3(0, 4, 7);
+const HOME_LOOK = new Vector3(0, 2.2, -5);
 
 /* -------------------------------------------------------------
-   MAIN APP
+   CAMERA PRESETS FOR EACH POSTER
+   - left: rotate + slide left a bit
+   - middle: go up, look at upper wall
+   - right: rotate + slide right a bit
 ------------------------------------------------------------- */
+const CAMERA_PRESETS: Record<string, { target: Vector3; lookAt: Vector3 }> = {
+  left: {
+    target: new Vector3(-3, 4, 10),
+    lookAt: new Vector3(-45, 4, -5),
+  },
+  middle: {
+    // Straight up from home position
+    target: new Vector3(0, 13, 7),
+    // Look at somewhere around the middle of the posters
+    lookAt: new Vector3(0, 12, -5),
+  },
+  right: {
+    // Slightly right of center
+    target: new Vector3(3, 4, 10),
+    // Look at a point right on the back wall, mid-height
+    lookAt: new Vector3(45, 5, 5),
+  },
+};
+
 function App() {
-  const [selectedProject, setSelectedProject] =
-    useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
+  // CameraRig animation targets
+  const [cameraTarget, setCameraTarget] = useState<Vector3 | null>(null);
+  const [cameraLookAt, setCameraLookAt] = useState<Vector3 | null>(null);
+
+  // Idle fixed camera position (used when no project is selected)
+  const [idlePos, setIdlePos] = useState(HOME_POS.clone());
+  const [idleLook, setIdleLook] = useState(HOME_LOOK.clone());
+
+
+  useEffect(() => {
+  // Wait 1 frame so R3F is initialized
+  requestAnimationFrame(() => {
+    // Fake "middle" camera movement
+    setCameraTarget(new Vector3(0, 10, 7));
+    setCameraLookAt(new Vector3(0, 5, -5));
+
+    // After tiny delay, return home
+    setTimeout(() => {
+      setSelectedProject(null);
+      setCameraTarget(HOME_POS.clone());
+      setCameraLookAt(HOME_LOOK.clone());
+    }, 50);
+  });
+}, []);
+
+
+  /* -------------------------------------------------------------
+     ESC KEY → return to exact home camera
+  ------------------------------------------------------------- */
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedProject(null);
+
+        // Reset idle to home
+        setIdlePos(HOME_POS.clone());
+        setIdleLook(HOME_LOOK.clone());
+
+        // Smooth CameraRig transition back home
+        setCameraTarget(HOME_POS.clone());
+        setCameraLookAt(HOME_LOOK.clone());
+      }
+    };
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
+  /* -------------------------------------------------------------
+     Poster click → choose camera preset based on project.id
+  ------------------------------------------------------------- */
+  const handleProjectSelect = (project: Project) => {
+    setSelectedProject(project);
+
+    const preset = CAMERA_PRESETS[project.id];
+    if (!preset) {
+      console.warn("No camera preset for project id:", project.id);
+      return;
+    }
+
+    // For poster views, we don't change idlePos/idleLook;
+    // we only move via CameraRig. When ESC is pressed,
+    // we animate back to HOME.
+    setCameraTarget(preset.target.clone());
+    setCameraLookAt(preset.lookAt.clone());
+  };
+
+  /* -------------------------------------------------------------
+     RENDER
+  ------------------------------------------------------------- */
   return (
     <div className="app-root">
       {/* Header */}
@@ -88,71 +119,59 @@ function App() {
         <div>
           <div className="app-header-title">Johnny Kuehnis</div>
           <div className="app-header-subtitle">
-            Software & systems — step into my dev room.
+            Software &amp; systems — step into my dev room.
           </div>
         </div>
       </div>
 
-      {/* Overlay */}
+      {/* Overlay Instructions */}
       <div className="app-overlay">
         <div className="app-overlay-inner">
           Click the posters on the wall to explore my projects.
         </div>
       </div>
 
-      {/* CANVAS */}
-      <Canvas
-        shadows
-        camera={{ position: [0, 1.2, 6], fov: 50 }}
-      >
-        {/* TEMPORARILY ENABLED CAMERA CONTROLS */}
+      {/* 3D Canvas */}
+      <Canvas shadows camera={{ position: [0, 4, 7], fov: 50 }}>
+        {/* Optional debug fly controls */}
         <FreeFlyControls movementSpeed={5} lookSpeed={0.002} />
 
+        {/* Idle camera when no project selected */}
+        <FixedCamera
+          active={selectedProject === null}
+          targetPos={idlePos}
+          targetLook={idleLook}
+        />
 
-        {/* If you want fixed camera again later, re-enable this */}
-        <FixedCamera />
+        {/* Smooth animated transitions for poster views */}
+        <CameraRig
+          target={cameraTarget}
+          lookAt={cameraLookAt}
+          lerpSpeed={0.08}
+          lookLerpSpeed={0.12}
+        />
 
-        {/* BACKGROUND */}
+        {/* Background color */}
         <color attach="background" args={["#10211A"]} />
 
-        {/* LIGHTING */}
+        {/* Lighting */}
         <ambientLight intensity={0.1} color="#ffffff" />
         <spotLight
           position={[2, 5, 3]}
-          intensity={2.4}
+          intensity={0.4}
           angle={0.7}
           penumbra={0.5}
           color="#ffddbb"
           castShadow
         />
-        <pointLight
-          position={[-3, 2, -2]}
-          intensity={0.2}
-          color="#88aaff"
-        />
-        <pointLight
-          position={[0, 0.5, 0]}
-          intensity={0.1}
-          color="#554466"
-        />
+        <pointLight position={[-3, 2, -2]} intensity={0.15} color="#88aaff" />
+        <pointLight position={[0, 0.5, 0]} intensity={0.2} color="#554466" />
 
-        <Environment preset="sunset" />
-
+        {/* Room */}
         <Suspense fallback={null}>
-          <RoomScene onProjectSelect={setSelectedProject} />
+          <RoomScene onProjectSelect={handleProjectSelect} />
         </Suspense>
-
       </Canvas>
-
-      {/* Modal */}
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          onClose={() =>
-            setSelectedProject(null)
-          }
-        />
-      )}
     </div>
   );
 }

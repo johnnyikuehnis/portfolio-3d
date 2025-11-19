@@ -1,30 +1,36 @@
 import { useGLTF } from "@react-three/drei";
-import * as THREE from "three";
-import type { JSX } from "react";
+import { useEffect } from "react";
 
-type ModelProps = JSX.IntrinsicElements["group"] & {
+// ------------------------------
+// GLOBAL LOAD TRACKER
+// ------------------------------
+let totalModels = 0;
+let loadedModels = 0;
+const listeners: (() => void)[] = [];
+
+export function onAllModelsLoaded(cb: () => void) {
+  listeners.push(cb);
+}
+
+type Props = {
   url: string;
-  scale?: number | [number, number, number];
+  [key: string]: any;
 };
 
-export function Model({ url, scale = 1, ...props }: ModelProps) {
-  console.log("Attempting to load model:", url);
+// ------------------------------
+// MODEL WRAPPER
+// ------------------------------
+export function Model({ url, ...props }: Props) {
+  totalModels++;
 
-  try {
-    const gltf = useGLTF(url) as any;
-    console.log("GLTF loaded:", gltf);
-    return (
-      <group {...props} scale={scale}>
-        <primitive object={gltf.scene} />
-      </group>
-    );
-  } catch (err) {
-    console.error("GLTF failed:", err);
-    return (
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry />
-        <meshStandardMaterial color="red" />
-      </mesh>
-    );
-  }
+  const gltf = useGLTF(url);
+
+  useEffect(() => {
+    loadedModels++;
+    if (loadedModels === totalModels) {
+      listeners.forEach((fn) => fn());
+    }
+  }, []);
+
+  return <primitive object={gltf.scene} {...props} />;
 }

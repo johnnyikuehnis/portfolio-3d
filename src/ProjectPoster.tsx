@@ -14,10 +14,22 @@ export function ProjectPoster({ project, position, onSelect }: Props) {
   const groupRef = useRef<THREE.Group>(null!);
   const [hovered, setHovered] = useState(false);
 
-  // changes cursor to pointer automatically
   useCursor(hovered);
 
-  // Smooth hover scale animation
+  // -----------------------------------------------------
+  // DYNAMIC POSTER SIZING
+  // Change these and the whole layout auto-resizes
+  // -----------------------------------------------------
+  const posterWidth = 2.0;
+  const posterHeight = 2.4;
+
+  // Spacing ratios
+  const imageHeight = posterHeight * 0.38;
+  const titleY = posterHeight * -0.05;
+  const taglineY = posterHeight * -0.18;
+  const techY = posterHeight * -0.33;
+
+  // Smooth hover scaling
   useFrame(() => {
     if (!groupRef.current) return;
 
@@ -37,7 +49,7 @@ export function ProjectPoster({ project, position, onSelect }: Props) {
     >
       {/* Poster background */}
       <mesh>
-        <planeGeometry args={[1.6, 2.3]} />
+        <planeGeometry args={[posterWidth, posterHeight]} />
         <meshStandardMaterial color="white" />
       </mesh>
 
@@ -45,17 +57,17 @@ export function ProjectPoster({ project, position, onSelect }: Props) {
       {project.image && (
         <Image
           url={project.image}
-          scale={[1.2, 0.7]}
-          position={[0, 0.55, 0.01]}
+          scale={[posterWidth * 0.75, imageHeight]}
+          position={[0, posterHeight * 0.23, 0.01]}
           transparent
         />
       )}
 
       {/* Title */}
       <Text
-        position={[0, -0.10, 0.02]}
-        fontSize={0.16}
-        maxWidth={1.3}
+        position={[0, titleY, 0.02]}
+        fontSize={posterHeight * 0.08}
+        maxWidth={posterWidth * 0.9}
         color="#111"
         anchorX="center"
         anchorY="middle"
@@ -65,9 +77,9 @@ export function ProjectPoster({ project, position, onSelect }: Props) {
 
       {/* Tagline */}
       <Text
-        position={[0, -0.32, 0.02]}
-        fontSize={0.115}
-        maxWidth={1.3}
+        position={[0, taglineY, 0.02]}
+        fontSize={posterHeight * 0.055}
+        maxWidth={posterWidth * 0.9}
         color="#444"
         anchorX="center"
         anchorY="middle"
@@ -77,9 +89,9 @@ export function ProjectPoster({ project, position, onSelect }: Props) {
 
       {/* Tech list */}
       <Text
-        position={[0, -0.80, 0.02]}
-        fontSize={0.11}
-        maxWidth={1.3}
+        position={[0, techY, 0.02]}
+        fontSize={posterHeight * 0.048}
+        maxWidth={posterWidth * 0.9}
         color="#666"
         anchorX="center"
         anchorY="middle"
