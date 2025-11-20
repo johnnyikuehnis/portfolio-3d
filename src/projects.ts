@@ -29,15 +29,15 @@ export const PROJECTS: Project[] = [
     description: 
     "A.R.M. is a gesture-controlled robotic arm powered primarily by computer vision. Using MediaPipe, the system tracks the user’s hand and extracts key points that show where the hand is in 3D space. A small classifier determines whether the hand is open or closed, and depth information helps estimate how far the hand is from the camera. These CV results are then mapped to the servos on a physical robotic arm, allowing the hardware to mimic the user’s movements in a simple, intuitive way.",
     tech: ["Computer Vision", "ML", "Robotics"],
-    image: "/images/placeholder.png",
+    image: "/images/arm-thumbnail.png",
     link: "https://github.com/johnnyikuehnis/Gesture-Controlled-Arm",
     verticalImage: "/images/cv-vert.jpg",
     horizontalImage: "/images/cv-horiz.png",
     panel: {
-      position: [-4.6, 4, 7],
+      position: [-5.3, 4, 7],
       rotationY: Math.PI / 2,
-      width: 1.77,
-      height: 1.3,
+      width: 2.655,
+      height: 1.95,
     },
   },
 
@@ -46,16 +46,17 @@ export const PROJECTS: Project[] = [
     title: "Plastic Analysis",
     tagline: "Chemical Data Monitoring",
     description:
-      "A data-driven analysis on endocrine-disrupting chemicals in food packaging.",
+      "This project analyzes endocrine-disrupting chemicals (EDCs) found in food and packaging by combining scraped datasets with statistical tests and simple machine learning models. We examined relationships between DEHP/DBP concentrations and food categories, tested several hypotheses, and visualized trends in chemical exposure. The results highlight meaningful differences between packaging types and suggest directions for future public-health research.",
     tech: ["Data Scraping", "Data Analysis"],
-    image: "/images/placeholder.png",
-    verticalImage: "/images/placeholder-vert.png",
-    horizontalImage: "/images/placeholder-horiz.png",
+    image: "/images/plastic-thumbnail.jpg",
+    link: "https://github.com/johnnyikuehnis/EDC-Analysis",
+    verticalImage: "/images/plastic-vert.png",
+    horizontalImage: "/images/plastic-horiz.png",
     panel: {
-      position: [5.9, 4, 7],
+      position: [5.3, 4, 7],
       rotationY: -Math.PI / 2,
-      width: 2.7,
-      height: 2.43,
+      width: 2.655,
+      height: 1.95,
     },
   },
 
@@ -64,11 +65,12 @@ export const PROJECTS: Project[] = [
     title: "The Lingo Genie",
     tagline: "Gen-Z Slang Learning Tool",
     description:
-      "A playful language-learning tool that teaches modern slang with interactive exercises.",
+    "LingoGenie is an interactive slang-learning platform built with React and Firebase that teaches modern Gen-Z vocabulary through dynamic lessons. The system features flashcards, fill-in-the-blank exercises, matching questions, and pronunciation tests powered by built-in speech recognition. Users earn XP, maintain streaks, and track progress in real time, while the interface blends playful animations, feedback cues, and smooth navigation to create an engaging, game-like learning experience.",
     tech: ["Frontend", "Backend", "Full-stack"],
-    image: "/images/placeholder.png",
-    // verticalImage: "/images/mario.png",
-    // horizontalImage: "/images/placeholder.png",
+    image: "/images/lingo-thumbnail.png",
+    link: "https://thelingogenie.com/",
+    verticalImage: "/images/lingo-vert.png",
+    horizontalImage: "/images/lingo-horiz.png",
     panel: {
       position: [0, 13, 4.3],
       rotationY: 0,
@@ -76,4 +78,25 @@ export const PROJECTS: Project[] = [
       height: 2.2,
     },
   },
+
+  {
+    id: "left-bot",
+    title: "Pokémon Sim",
+    tagline: "A Pokémon Battle Simulator",
+    description: 
+    "A.R.M. is a gesture-controlled robotic arm powered primarily by computer vision. Using MediaPipe, the system tracks the user’s hand and extracts key points that show where the hand is in 3D space. A small classifier determines whether the hand is open or closed, and depth information helps estimate how far the hand is from the camera. These CV results are then mapped to the servos on a physical robotic arm, allowing the hardware to mimic the user’s movements in a simple, intuitive way.",
+    tech: ["Computer Vision", "ML", "Robotics"],
+    image: "/images/arm-thumbnail.png",
+    link: "https://github.com/johnnyikuehnis/pokemon",
+    verticalImage: "/images/cv-vert.jpg",
+    horizontalImage: "/images/cv-horiz.png",
+    panel: {
+      position: [-5.3, 4, 7],
+      rotationY: Math.PI / 2,
+      width: 2.655,
+      height: 1.95,
+    },
+  },
+  
+  
 ];

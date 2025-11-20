@@ -134,23 +134,45 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
       {/* =========================================================
           POSTERS
       ========================================================= */}
+      {/* middle */}
       <ProjectPoster
         project={PROJECTS[2]}
-        position={[0, 5, -4.95]}
+        position={[0, 5.9, -4.95]}
+        onSelect={onProjectSelect}
+      />
+
+      <ProjectPoster
+        project={PROJECTS[2]}
+        position={[0, 3.2, -4.95]}
+        onSelect={onProjectSelect}
+      />
+
+      {/* left */}
+      <ProjectPoster
+        project={PROJECTS[0]}
+        position={[-3, 5.9, -4.95]}
         onSelect={onProjectSelect}
       />
 
       <ProjectPoster
         project={PROJECTS[0]}
-        position={[-3, 5, -4.95]}
+        position={[-3, 3.2, -4.95]}
+        onSelect={onProjectSelect}
+      />
+
+      {/* right */}
+      <ProjectPoster
+        project={PROJECTS[1]}
+        position={[3, 5.9, -4.95]}
         onSelect={onProjectSelect}
       />
 
       <ProjectPoster
         project={PROJECTS[1]}
-        position={[3, 5, -4.95]}
+        position={[3, 3.2, -4.95]}
         onSelect={onProjectSelect}
       />
+
 
       {/* =========================================================
           MODELS
@@ -258,7 +280,7 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
 
       <Model
         url="/models/creeper.glb"
-        position={[-1.0, 2.2, -4.3]}
+        position={[-1.3, 2.2, -4.3]}
         scale={0.21}
       />
 

@@ -27,6 +27,10 @@ const CAMERA_PRESETS: Record<string, { target: Vector3; lookAt: Vector3 }> = {
     target: new Vector3(-3, 4, 7),
     lookAt: new Vector3(-1, 0, 0), // pure left
   },
+  left2: {
+    target: new Vector3(-3, 4, 11),
+    lookAt: new Vector3(-1, 0, 0), // pure left
+  },
   middle: {
     target: new Vector3(0, 13, 7),
     lookAt: new Vector3(0, 0, -1), // forward

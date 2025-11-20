@@ -241,7 +241,7 @@ export function ProjectInfoPanel({
                     cursor: "pointer",
                   }}
                 >
-                  See Full Repo
+                  Learn More
                 </button>
               </div>
             </div>
