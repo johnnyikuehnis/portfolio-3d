@@ -14,6 +14,8 @@ export function ProjectPoster({ project, position, onSelect }: Props) {
   const groupRef = useRef<THREE.Group>(null!);
   const [hovered, setHovered] = useState(false);
 
+  
+
   useCursor(hovered);
 
   // -----------------------------------------------------

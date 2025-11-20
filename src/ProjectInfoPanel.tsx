@@ -3,220 +3,251 @@ import React from "react";
 import { Html } from "@react-three/drei";
 import type { ThreeElements } from "@react-three/fiber";
 
-type ProjectInfoPanelProps = ThreeElements["mesh"] & {
+type Props = ThreeElements["mesh"] & {
   width?: number;
   height?: number;
   project?: {
     title: string;
     tagline: string;
     description: string;
-    thumbnail?: string;
-    skills?: string[];
-    features?: string[];
+    verticalImage?: string;
+    horizontalImage?: string;
+    tech?: string[];
+    link: string;
   };
 };
 
 export function ProjectInfoPanel({
-  width = 35,
-  height = 20,
+  width = 3.0,
+  height = 2.2,
   project,
   children,
   ...meshProps
-}: ProjectInfoPanelProps) {
-  return (
-    <mesh {...meshProps} castShadow receiveShadow>
-      {/* Background plane */}
-      <planeGeometry args={[width, height]} />
-      <meshStandardMaterial
-        color="#000000"
-        transparent
-        opacity={0.85}
-      />
+}: Props) {
 
-      {/* HTML content overlay */}
-      <Html
-        transform
-        distanceFactor={1}
-        position={[0, 0, 0.1]} // render slightly in front of plane
-        style={{
-          width: `${width * 20}px`, // scale for readability
-          height: `${height * 20}px`,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          pointerEvents: "auto", // allow hovering/clicking
-        }}
-      >
-        <div
+  // DESIGN SPACE
+  const DESIGN_W = width * 1000;
+  const DESIGN_H = height * 1000;
+
+  // HTML SCALE (your chosen value)
+  const scale = 0.38;
+
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    requestAnimationFrame(() => setMounted(true));
+  }, []);
+
+  return (
+    <mesh {...meshProps}>
+      <planeGeometry args={[width, height]} />
+      <meshStandardMaterial color="#000" transparent opacity={0.25} />
+
+      {mounted && (
+        <Html
+          transform
+          distanceFactor={1}
+          position={[0, 0, 0.1]}
           style={{
-            color: "white",
-            padding: "20px 30px",
-            width: "100%",
-            height: "100%",
-            fontFamily: "Inter, sans-serif",
-            display: "flex",
-            gap: "20px",
+            width: `${DESIGN_W}px`,
+            height: `${DESIGN_H}px`,
+            transform: `scale(${scale})`,
+            transformOrigin: "center center",
+            pointerEvents: "auto",
           }}
         >
-          {/* LEFT: Thumbnail */}
-          {project?.thumbnail && (
+          {/* UI PANEL */}
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              padding: DESIGN_W * 0.02 + "px",
+              gap: DESIGN_W * 0.015 + "px",
+              fontFamily: "Inter, sans-serif",
+              color: "white",
+              boxSizing: "border-box",
+            }}
+          >
+            {/* TOP IMAGES */}
             <div
               style={{
-                flex: "0 0 45%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                display: "grid",
+                gridTemplateColumns: "40% 60%",
+                height: "48%",
+                gap: DESIGN_W * 0.015 + "px",
               }}
             >
-              <img
-                src={project.thumbnail}
-                alt="project preview"
+              {/* Vertical image */}
+              <div
                 style={{
                   width: "100%",
-                  borderRadius: "10px",
-                  boxShadow: "0 0 20px rgba(255, 255, 255, 0.15)",
+                  height: "100%",
+                  overflow: "hidden",
+                  borderRadius: DESIGN_W * 0.01 + "px",
+                  background: "#111",
                 }}
-              />
+              >
+                <img
+                  src={project?.verticalImage}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
+
+              {/* Horizontal image */}
+              <div
+                style={{
+                  width: "97%",
+                  height: "100%",
+                  overflow: "hidden",
+                  borderRadius: DESIGN_W * 0.01 + "px",
+                  background: "#111111",
+                }}
+              >
+                <img
+                  src={project?.horizontalImage}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
             </div>
-          )}
 
-          {/* RIGHT: Text Content */}
-          <div style={{ flex: 1 }}>
-            <h1
-              style={{
-                margin: "0 0 10px 0",
-                fontSize: "2.4rem",
-                fontWeight: 700,
-              }}
-            >
-              {project?.title}
-            </h1>
-
+            {/* TEXT PANEL */}
             <div
               style={{
-                fontSize: "1.2rem",
-                color: "#92ffe0",
-                marginBottom: "15px",
+                flex: "1 1 auto",
+                minHeight: 0,
+                background: "rgba(255,255,255,0.07)",
+                borderRadius: "10px",
+                padding: "12px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+                overflow: "hidden",
               }}
             >
-              {project?.tagline}
-            </div>
-
-            <p
-              style={{
-                fontSize: "1.1rem",
-                color: "#eee",
-                lineHeight: "1.45",
-                marginBottom: "15px",
-              }}
-            >
-              {project?.description}
-            </p>
-
-            {/* Skills */}
-            {project?.skills && (
-              <>
-                <div
-                  style={{
-                    fontSize: "1rem",
-                    fontWeight: 600,
-                    marginBottom: "8px",
-                  }}
-                >
-                  Skills
-                </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "8px",
-                    marginBottom: "20px",
-                  }}
-                >
-                  {project.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      style={{
-                        padding: "6px 12px",
-                        background: "#222",
-                        borderRadius: "8px",
-                        fontSize: "0.9rem",
-                        border: "1px solid #444",
-                      }}
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </>
-            )}
-
-            {/* Features */}
-            {project?.features && (
-              <>
-                <div
-                  style={{
-                    fontSize: "1rem",
-                    fontWeight: 600,
-                    marginBottom: "6px",
-                  }}
-                >
-                  Features
-                </div>
-
-                <ul
-                  style={{
-                    fontSize: "1rem",
-                    lineHeight: "1.4",
-                    marginBottom: "25px",
-                  }}
-                >
-                  {project.features.map((f) => (
-                    <li key={f}>{f}</li>
-                  ))}
-                </ul>
-              </>
-            )}
-
-            {/* Buttons */}
-            <div style={{ display: "flex", gap: "15px" }}>
-              <button
+              {/* ------- TITLE + TAGLINE ON ONE LINE ------- */}
+              <div
                 style={{
-                  padding: "10px 18px",
-                  background: "#ffffff10",
-                  border: "1px solid #ffffff30",
-                  borderRadius: "8px",
-                  color: "white",
-                  cursor: "pointer",
-                  fontSize: "1rem",
-                }}
-                onClick={() => {
-                  window.dispatchEvent(
-                    new KeyboardEvent("keydown", { key: "Escape" })
-                  );
+                  display: "flex",
+                  alignItems: "baseline",
+                  gap: "10px",
+                  whiteSpace: "nowrap",
                 }}
               >
-                Go Back
-              </button>
+                <h1
+                  style={{
+                    margin: 0,
+                    fontSize: DESIGN_W * 0.045 + "px",
+                    fontWeight: 700,
+                  }}
+                >
+                  {project?.title}
+                </h1>
 
-              <button
+                <span
+                  style={{
+                    fontSize: DESIGN_W * 0.03 + "px",
+                    color: "#92ffe0",
+                    fontWeight: 500,
+                  }}
+                >
+                  {project?.tagline}
+                </span>
+              </div>
+
+              {/* ------- SMALLER DESCRIPTION ------- */}
+              <p
                 style={{
-                  padding: "10px 18px",
-                  background: "#6644ff",
-                  opacity: 0.6,
-                  borderRadius: "8px",
-                  color: "white",
-                  fontSize: "1rem",
-                  cursor: "not-allowed",
+                  margin: 0,
+                  opacity: 0.95,
+                  lineHeight: 1.35,
+                  fontSize: DESIGN_W * 0.020   + "px",
+                  maxWidth: "92%",
                 }}
               >
-                Learn More (Coming Soon)
-              </button>
+                {project?.description}
+              </p>
+
+              {/* ------- TECH TAGS ------- */}
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: DESIGN_W * 0.01 + "px",
+                }}
+              >
+                {project?.tech?.map((tag) => (
+                  <span
+                    key={tag}
+                    style={{
+                      background: "rgba(255,255,255,0.18)",
+                      padding: `${DESIGN_W * 0.01}px ${DESIGN_W * 0.015}px`,
+                      borderRadius: DESIGN_W * 0.01 + "px",
+                      fontSize: DESIGN_W * 0.02 + "px",
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* ------- BUTTONS ------- */}
+              <div
+                style={{
+                  marginTop: "auto",
+                  display: "flex",
+                  gap: DESIGN_W * 0.015 + "px",
+                }}
+              >
+                {/* GREEN GO BACK BUTTON */}
+                <button
+                  onClick={() =>
+                    window.dispatchEvent(
+                      new KeyboardEvent("keydown", { key: "Escape" })
+                    )
+                  }
+                  style={{
+                    padding: `${DESIGN_W * 0.012}px ${DESIGN_W * 0.018}px`,
+                    background: "#00E3B2",
+                    borderRadius: DESIGN_W * 0.012 + "px",
+                    border: "none",
+                    color: "black",
+                    fontWeight: 600,
+                    fontSize: DESIGN_W * 0.025 + "px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Go Back
+                </button>
+
+                <button
+                  onClick={() => window.open(project?.link, "_blank")}
+                  style={{
+                    padding: `${DESIGN_W * 0.012}px ${DESIGN_W * 0.02}px`,
+                    background: "#00E3B2",
+                    borderRadius: DESIGN_W * 0.012 + "px",
+                    border: "none",
+                    color: "black",
+                    fontWeight: 600,
+                    fontSize: DESIGN_W * 0.025 + "px",
+                    cursor: "pointer",
+                  }}
+                >
+                  See Full Repo
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </Html>
+        </Html>
+      )}
 
       {children}
     </mesh>

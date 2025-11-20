@@ -3,14 +3,14 @@ import React from "react";
 import type { Project } from "./projects";
 import { ProjectInfoPanel } from "./ProjectInfoPanel";
 
-type ProjectInfoContainerProps = {
+type Props = {
   project: Project | null;
 };
 
-export function ProjectInfoContainer({ project }: ProjectInfoContainerProps) {
+export function ProjectInfoContainer({ project }: Props) {
   if (!project || !project.panel) return null;
 
-  const { position, rotationY, width = 35, height = 20 } = project.panel;
+  const { position, rotationY, width, height } = project.panel;
 
   return (
     <ProjectInfoPanel
@@ -18,8 +18,20 @@ export function ProjectInfoContainer({ project }: ProjectInfoContainerProps) {
       rotation={[0, rotationY, 0]}
       width={width}
       height={height}
-    >
-      {/* This is where we’ll later put text/images/GIFs for the project */}
-    </ProjectInfoPanel>
+      project={{
+        title: project.title,
+        tagline: project.tagline,
+        description: project.description,
+        link: project.link ?? "",
+
+        // MUST be mapped to "skills" because the panel expects that name
+        tech: project.tech ?? [],
+
+        // correct fallback images
+        verticalImage: project.verticalImage ?? "/images/placeholder-vert.png",
+        horizontalImage:
+          project.horizontalImage ?? "/images/placeholder-horiz.png",
+      }}
+    />
   );
 }

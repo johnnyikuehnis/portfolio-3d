@@ -7,6 +7,7 @@ import { RoomScene } from "./RoomScene";
 import { CameraRig } from "./CameraRig";
 import { FixedCamera } from "./FixedCamera";
 import type { Project } from "./projects";
+import { PROJECTS } from "./projects";
 import { ProjectInfoContainer } from "./ProjectInfoContainer";
 
 /* -------------------------------------------------------------
@@ -47,6 +48,13 @@ function App() {
   const [idlePos, setIdlePos] = useState(HOME_POS.clone());
   const [idleLook, setIdleLook] = useState(HOME_LOOK.clone());
 
+  useEffect(() => {
+  PROJECTS.forEach(p => {
+    if (p.verticalImage) preloadImage(p.verticalImage);
+    if (p.horizontalImage) preloadImage(p.horizontalImage);
+  });
+}, []);
+
 
   useEffect(() => {
   // Wait 1 frame so R3F is initialized
@@ -86,6 +94,13 @@ function App() {
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
+
+
+  function preloadImage(src: string) {
+    const img = new Image();
+    img.src = src;
+  }
+
 
   /* -------------------------------------------------------------
      Poster click → choose camera preset based on project.id
@@ -128,12 +143,14 @@ function App() {
         </div>
       </div>
 
+      
+
       {/* 3D Canvas */}
       <Canvas shadows camera={{ position: [0, 4, 7], fov: 50 }}>
 
 
         {/* Optional debug fly controls */}
-        <FreeFlyControls movementSpeed={5} lookSpeed={0.002} />
+        <FreeFlyControls movementSpeed={9} lookSpeed={0.008} />
 
         {/* Idle camera when no project selected */}
         <FixedCamera
@@ -142,7 +159,6 @@ function App() {
           targetLook={idleLook}
         />
 
-        {/* Smooth animated transitions for poster views */}
         <CameraRig
           target={cameraTarget}
           lookAt={cameraLookAt}
