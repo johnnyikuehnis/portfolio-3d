@@ -39,11 +39,11 @@ export function AboutMePanel({ onClose }: { onClose?: () => void } = {}) {
     // Fade-in/fade-out animation
     // -----------------------------------------
     const targetOpacity = visible ? 0.92 : 0;
-    const targetScale = visible ? 1 : 0.85;
+    const targetScale = visible ? 1 : 0.1;
 
     if (bgMaterialRef.current) {
       bgMaterialRef.current.opacity +=
-        (targetOpacity - bgMaterialRef.current.opacity) * 0.07;
+        (targetOpacity - bgMaterialRef.current.opacity) * 0.25;
 
       // When fully transparent, mark hidden + call onClose if needed
       if (!visible && bgMaterialRef.current.opacity < 0.01) {

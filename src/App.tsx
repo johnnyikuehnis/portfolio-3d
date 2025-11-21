@@ -97,8 +97,8 @@ const [selectedProject, setSelectedProject] = useState<Project[] | null>(null);
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setSelectedProject(null);
-        setAboutOpen(false);
+        // setSelectedProject(null);
+        // setAboutOpen(false);
 
         // Reset idle to home
         setIdlePos(HOME_POS.clone());
@@ -193,7 +193,7 @@ const [selectedProject, setSelectedProject] = useState<Project[] | null>(null);
         <div>
           <div className="app-header-title">Johnny Kuehnis</div>
           <div className="app-header-subtitle">
-            Software &amp; systems — step into my dev room.
+            cool software fere — step into my dev room!.
           </div>
         </div>
       </div>
@@ -210,7 +210,10 @@ const [selectedProject, setSelectedProject] = useState<Project[] | null>(null);
       {/* 3D Canvas */}
       <Canvas shadows camera={{ position: [0, 4, 7], fov: 50 }}>
 
-        {aboutOpen && <AboutMePanel />}
+        {aboutOpen && (
+          <AboutMePanel onClose={() => setAboutOpen(false)} />
+        )}
+
 
 
         {/* Optional debug fly controls */}
