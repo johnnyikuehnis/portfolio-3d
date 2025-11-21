@@ -74,27 +74,65 @@ export const PROJECTS: Project[] = [
     panel: {
       position: [0, 13, 4.3],
       rotationY: 0,
-      width: 3.0,
-      height: 2.2,
+      width: 2.86,
+      height: 2.1,
     },
   },
 
   {
-    id: "left-bot",
+    id: "left2",
     title: "Pokémon Sim",
     tagline: "A Pokémon Battle Simulator",
     description: 
-    "A.R.M. is a gesture-controlled robotic arm powered primarily by computer vision. Using MediaPipe, the system tracks the user’s hand and extracts key points that show where the hand is in 3D space. A small classifier determines whether the hand is open or closed, and depth information helps estimate how far the hand is from the camera. These CV results are then mapped to the servos on a physical robotic arm, allowing the hardware to mimic the user’s movements in a simple, intuitive way.",
-    tech: ["Computer Vision", "ML", "Robotics"],
-    image: "/images/arm-thumbnail.png",
+    "A top-down Pokémon-style RPG built with an overworld, trainer battles, wild encounters, and a leveling system. Players explore a randomly generated map with BFS-grown grass, challenge NPC trainers, and manage a roster of Pokémon with swappable parties, type matchups, PP, and status effects. The engine supports move logic, stat-based turn order, type effectiveness, multi-Pokémon trainer battles, and a simple AI that picks moves based on damage and advantage. Includes sprites for 19 Pokémon and a full battle UI.",
+    tech: ["Game Design", "JavaFX"],
+    image: "/images/pokemon-thumbnail.jpg",
     link: "https://github.com/johnnyikuehnis/pokemon",
-    verticalImage: "/images/cv-vert.jpg",
-    horizontalImage: "/images/cv-horiz.png",
+    verticalImage: "/images/pokemon-vert.png",
+    horizontalImage: "/images/pokemon-horiz.png",
     panel: {
-      position: [-5.3, 4, 7],
+      position: [-5.3, 4, 10],
       rotationY: Math.PI / 2,
       width: 2.655,
       height: 1.95,
+    },
+  },
+
+  {
+    id: "right2",
+    title: "Coming Soon",
+    tagline: "Coming Soon",
+    description: 
+    "",
+    tech: [""],
+    image: "/images/placeholder.png",
+    // link: "https://github.com/johnnyikuehnis/pokemon",
+    // verticalImage: "/images/pokemon-vert.jpg",
+    // horizontalImage: "/images/pokemon-horiz.png",
+    panel: {
+      position: [5.3, 4, 10],
+      rotationY: -Math.PI / 2,
+      width: 2.655,
+      height: 1.95,
+    },
+  },
+
+  {
+    id: "middle2",
+    title: "Coming Soon",
+    tagline: "Coming Soon",
+    description: 
+    "",
+    tech: [""],
+    image: "/images/placeholder.png",
+    // link: "https://github.com/johnnyikuehnis/pokemon",
+    // verticalImage: "/images/pokemon-vert.jpg",
+    // horizontalImage: "/images/pokemon-horiz.png",
+    panel: {
+      position: [0, 16, 4.3],
+      rotationY: 0,
+      width: 2.86,
+      height: 2.1,
     },
   },
   

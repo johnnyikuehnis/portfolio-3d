@@ -1,6 +1,7 @@
 import { Model } from "./Model";
 import { ProjectPoster } from "./ProjectPoster";
 import { PROJECTS } from "./projects";
+import { Text } from "@react-three/drei";
 import type { Project } from "./projects";
 
 
@@ -18,7 +19,7 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
       <directionalLight
         intensity={0.2}
         position={[4, 5, 3]}
-        color={"#f77979ff"}
+        color={"#f77979"}  // valid
         castShadow
       />
 
@@ -39,14 +40,42 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
 
       {/* Floor Lamp Light */}
       <pointLight
-        position={[2.1, 1.35, -3.8]}    // height of bulb inside shade
+        position={[2.1, 1.35, -3.85]}    // height of bulb inside shade
         intensity={6.0}
         distance={10}
         decay={2}
         color={"#ffeecf"}               // slightly softer warm
         castShadow
       />
+      
+      {/* === Computer Screen (Clickable) === */}
+<group
+  onClick={() => onProjectSelect({ id: "about" } as any)}
+  onPointerEnter={() => (document.body.style.cursor = "pointer")}
+  onPointerLeave={() => (document.body.style.cursor = "default")}
+>
+  <Model
+    url="/models/computerScreen.glb"
+    position={[-4.2, 0.35, -4.4]}
+    scale={3.7}
+  />
 
+  {/* ----- TEXT ON SCREEN ----- */}
+  <Text
+  position={[-3.45, 1.00, -4.48]}
+  rotation={[0, Math.PI * -0.004, 0]}
+  fontSize={0.13}
+  color="#ffffff"
+  font="/fonts/PressStart2P-Regular.ttf"
+  anchorX="center"
+  anchorY="middle"
+  outlineColor="#95393c"
+  outlineWidth={0.022}
+>
+  ABOUT ME
+</Text>
+
+</group>
 
 
       {/* =========================================================
@@ -117,7 +146,7 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
         rotation={[0, Math.PI / 2, 0]}
         receiveShadow
       >
-        <planeGeometry args={[30, 40]} />
+        <planeGeometry args={[50, 40]} />
         <meshStandardMaterial color="#5a515f" roughness={0.9} metalness={0.05} />
       </mesh>
 
@@ -126,7 +155,7 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
         rotation={[0, -Math.PI / 2, 0]}
         receiveShadow
       >
-        <planeGeometry args={[30, 40]} />
+        <planeGeometry args={[50, 40]} />
         <meshStandardMaterial color="#5a515f" roughness={0.9} metalness={0.05} />
       </mesh>
 
@@ -142,7 +171,7 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
       />
 
       <ProjectPoster
-        project={PROJECTS[2]}
+        project={PROJECTS[5]}
         position={[0, 3.2, -4.95]}
         onSelect={onProjectSelect}
       />
@@ -155,7 +184,7 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
       />
 
       <ProjectPoster
-        project={PROJECTS[0]}
+        project={PROJECTS[3]}
         position={[-3, 3.2, -4.95]}
         onSelect={onProjectSelect}
       />
@@ -168,7 +197,7 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
       />
 
       <ProjectPoster
-        project={PROJECTS[1]}
+        project={PROJECTS[4]}
         position={[3, 3.2, -4.95]}
         onSelect={onProjectSelect}
       />
@@ -199,11 +228,11 @@ export function RoomScene({ onProjectSelect }: RoomSceneProps) {
         rotation={[0, Math.PI / 2, 0]}
       />
 
-      <Model
+      {/* <Model
         url="/models/computerScreen.glb"
         position={[-4.2, 0.35, -4.4]}
         scale={3.7}
-      />
+      /> */}
 
       <Model
         url="/models/computerKeyboard.glb"

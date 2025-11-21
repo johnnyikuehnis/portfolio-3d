@@ -15,7 +15,7 @@ const WORLD_LOOK = new Vector3();
 export function CameraRig({
   target,
   lookAt,
-  lerpSpeed = 0.08,
+  lerpSpeed = 0.18,
   lookLerpSpeed = 0.12,
 }: CameraRigProps) {
   const { camera } = useThree();

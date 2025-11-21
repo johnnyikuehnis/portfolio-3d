@@ -155,7 +155,7 @@ export function ProjectInfoPanel({
                 <span
                   style={{
                     fontSize: DESIGN_W * 0.03 + "px",
-                    color: "#92ffe0",
+                    color: "#95393c",
                     fontWeight: 500,
                   }}
                 >
@@ -216,7 +216,7 @@ export function ProjectInfoPanel({
                   }
                   style={{
                     padding: `${DESIGN_W * 0.012}px ${DESIGN_W * 0.018}px`,
-                    background: "#00E3B2",
+                    background: "#95393c",
                     borderRadius: DESIGN_W * 0.012 + "px",
                     border: "none",
                     color: "black",
@@ -232,7 +232,7 @@ export function ProjectInfoPanel({
                   onClick={() => window.open(project?.link, "_blank")}
                   style={{
                     padding: `${DESIGN_W * 0.012}px ${DESIGN_W * 0.02}px`,
-                    background: "#00E3B2",
+                    background: "#95393c",
                     borderRadius: DESIGN_W * 0.012 + "px",
                     border: "none",
                     color: "black",

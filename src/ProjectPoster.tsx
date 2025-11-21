@@ -16,28 +16,30 @@ export function ProjectPoster({ project, position, onSelect }: Props) {
 
   useCursor(hovered);
 
-  // -----------------------------------------------------
-  // DYNAMIC POSTER SIZING
-  // Change these and the whole layout auto-resizes
-  // -----------------------------------------------------
   const posterWidth = 2.2;
-  const posterHeight = 2.5;
+  const posterHeight = 2.4;
 
-  // Spacing ratios
-  const imageWidth = posterWidth * 0.85
-  const imageHeight = posterHeight * 0.70;
-  const titleY = posterHeight * -0.37;
-  const taglineY = posterHeight * -0.18;
-  const techY = posterHeight * -0.33;
+  const imageWidth = posterWidth * 0.83;
+  const imageHeight = posterHeight * 0.72;
+  const footerY = -posterHeight * 0.37;
 
-  // Smooth hover scaling
+  // animated frame glow
+  const frameMaterial = useRef<THREE.MeshStandardMaterial>(null);
+
   useFrame(() => {
     if (!groupRef.current) return;
 
-    const target = hovered ? 1.12 : 1.0;
+    // Hover scale
+    const target = hovered ? 1.08 : 1.0;
     groupRef.current.scale.x += (target - groupRef.current.scale.x) * 0.1;
     groupRef.current.scale.y += (target - groupRef.current.scale.y) * 0.1;
     groupRef.current.scale.z += (target - groupRef.current.scale.z) * 0.1;
+
+    // Glow
+    if (frameMaterial.current) {
+      frameMaterial.current.emissiveIntensity +=
+        ((hovered ? 0.55 : 0.15) - frameMaterial.current.emissiveIntensity) * 0.1;
+    }
   });
 
   return (
@@ -48,10 +50,23 @@ export function ProjectPoster({ project, position, onSelect }: Props) {
       onPointerLeave={() => setHovered(false)}
       onClick={() => onSelect(project)}
     >
+      {/* Frame */}
+      <mesh position={[0, 0, -0.03]}>
+        <planeGeometry args={[posterWidth + 0.15, posterHeight + 0.15]} />
+        <meshStandardMaterial
+          ref={frameMaterial}
+          color="#222222"
+          roughness={0.8}
+          metalness={0.3}
+          emissive="#95393c"
+          emissiveIntensity={0.15}
+        />
+      </mesh>
+
       {/* Poster background */}
       <mesh>
         <planeGeometry args={[posterWidth, posterHeight]} />
-        <meshStandardMaterial color="grey" />
+        <meshStandardMaterial color="#2a2a2b" roughness={1.0} />
       </mesh>
 
       {/* Image */}
@@ -59,46 +74,23 @@ export function ProjectPoster({ project, position, onSelect }: Props) {
         <Image
           url={project.image}
           scale={[imageWidth, imageHeight]}
-          position={[0, posterHeight * 0.08, 0.01]}
+          position={[0, posterHeight * 0.12, 0.01]}
           transparent
         />
       )}
 
       {/* Title */}
       <Text
-        position={[0, titleY, 0.02]}
-        fontSize={posterHeight * 0.08}
-        maxWidth={posterWidth * 0.9}
-        color="#be9e9eff" 
+        position={[0, footerY, 0.02]}
+        fontSize={posterHeight * 0.065}
+        maxWidth={posterWidth * 0.95}
+        color="#f0e6e6"
+        font="/fonts/PressStart2P-Regular.ttf"
         anchorX="center"
         anchorY="middle"
       >
         {project.tagline}
       </Text>
-
-      {/* Tagline */}
-      {/* <Text
-        position={[0, taglineY, 0.02]}
-        fontSize={posterHeight * 0.055}
-        maxWidth={posterWidth * 0.9}
-        color="#d0ceceff"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {project.title}
-      </Text> */}
-
-      {/* Tech list */}
-      {/* <Text
-        position={[0, techY, 0.02]}
-        fontSize={posterHeight * 0.048}
-        maxWidth={posterWidth * 0.9}
-        color="#b8b7b7ff"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {project.tech.join(" • ")}
-      </Text> */}
     </group>
   );
 }
