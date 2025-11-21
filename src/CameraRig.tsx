@@ -9,7 +9,6 @@ export type CameraRigProps = {
   lookLerpSpeed?: number;      // rotation smoothing
 };
 
-const TMP = new Vector3();
 const WORLD_LOOK = new Vector3();
 
 export function CameraRig({

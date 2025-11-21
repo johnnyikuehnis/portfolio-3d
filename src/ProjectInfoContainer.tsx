@@ -1,4 +1,3 @@
-import React from "react";
 import type { Project } from "./projects";
 import { ProjectInfoPanel } from "./ProjectInfoPanel";
 
