@@ -193,7 +193,7 @@ const [selectedProject, setSelectedProject] = useState<Project[] | null>(null);
         <div>
           <div className="app-header-title">Johnny Kuehnis</div>
           <div className="app-header-subtitle">
-            cool software fere — step into my dev room!.
+            cool stuff here — step into my dev room!
           </div>
         </div>
       </div>
